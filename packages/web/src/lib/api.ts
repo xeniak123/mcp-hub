@@ -64,6 +64,16 @@ export const api = {
     request<{ restarted: number; failed: number }>('/api/connectors/restart-all', { method: 'POST' }),
   stopAll: () => request<{ stopped: number }>('/api/connectors/stop-all', { method: 'POST' }),
   meta: () => request<{ version: string; commit: string }>('/api/meta'),
+  updateCheck: (force = false) =>
+    request<{
+      currentVersion: string;
+      latestVersion: string | null;
+      updateAvailable: boolean;
+      releaseUrl: string | null;
+      releaseNotes: string | null;
+      publishedAt: string | null;
+      checkedAt: string;
+    }>(`/api/update/check${force ? '?force=1' : ''}`),
   changePassword: (currentPassword: string, newPassword: string) =>
     request<{ ok: true }>('/api/auth/change-password', {
       method: 'POST',

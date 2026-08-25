@@ -1,6 +1,16 @@
 import { useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Download, KeyRound, Laptop, Plus, ShieldCheck, Trash2, Upload } from 'lucide-react';
+import {
+  ArrowUpCircle,
+  Download,
+  KeyRound,
+  Laptop,
+  Plus,
+  RefreshCw,
+  ShieldCheck,
+  Trash2,
+  Upload,
+} from 'lucide-react';
 import { api } from '../lib/api';
 import { Button, Card, CopyButton, EmptyState, Input, Modal } from '../components/ui/primitives';
 import { useToast } from '../components/ui/toast';
@@ -47,6 +57,8 @@ export function SettingsPage() {
         <h2 className="font-mono text-[11px] uppercase tracking-wider text-ink-faint">Backup &amp; restore</h2>
         <BackupRestoreCard />
       </section>
+
+      <UpdatesCard />
 
       <footer className="border-t border-line pt-4 font-mono text-[10px] uppercase tracking-wider text-ink-faint/70">
         mcp-hub {metaQ.data ? `v${metaQ.data.version} · build ${metaQ.data.commit.slice(0, 7)}` : ''}
@@ -147,6 +159,101 @@ function AccountSecurityCard() {
         ))}
       </div>
     </Card>
+  );
+}
+
+/**
+ * Update check + one-click upgrade path. The hub container can't replace its
+ * own image, so the "one click" produces the exact command for the deployment
+ * (docker compose or Portainer pull) and Watchtower users see that updates
+ * happen on their own.
+ */
+function UpdatesCard() {
+  const toast = useToast();
+  const qc = useQueryClient();
+  const check = useQuery({
+    queryKey: ['update-check'],
+    queryFn: () => api.updateCheck(),
+    staleTime: 10 * 60 * 1000,
+    retry: false,
+  });
+
+  const recheck = useMutation({
+    mutationFn: () => api.updateCheck(true),
+    onSuccess: (r) => {
+      qc.setQueryData(['update-check'], r);
+      toast.success(r.updateAvailable ? 'New version found' : 'You are up to date');
+    },
+    onError: (e) => toast.error((e as Error).message),
+  });
+
+  if (check.isLoading) return null;
+  const d = check.data;
+  if (!d) return null;
+
+  const composeCmd =
+    'docker compose pull app && docker compose up -d --no-deps --force-recreate app';
+  const portainerHint =
+    'Portainer: Stack → your stack → Pull and redeploy';
+
+  return (
+    <section className="space-y-3">
+      <h2 className="font-mono text-[11px] uppercase tracking-wider text-ink-faint">Updates</h2>
+      <Card className="space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="min-w-0">
+            <p className="flex items-center gap-2 text-sm font-medium text-ink">
+              <ArrowUpCircle
+                className={d.updateAvailable ? 'h-4 w-4 text-ok' : 'h-4 w-4 text-ink-faint'}
+                strokeWidth={1.75}
+              />
+              {d.latestVersion === null
+                ? 'Could not check for updates'
+                : d.updateAvailable
+                  ? `v${d.currentVersion} → v${d.latestVersion} available`
+                  : `Up to date · v${d.currentVersion}`}
+            </p>
+            <p className="mt-0.5 font-mono text-[10px] uppercase tracking-wider text-ink-faint">
+              checked {new Date(d.checkedAt).toLocaleString()} · hub.docker.com / github releases
+            </p>
+          </div>
+          <Button variant="subtle" onClick={() => recheck.mutate()} disabled={recheck.isPending}>
+            {recheck.isPending && <RefreshCw className="h-3.5 w-3.5 animate-spin" />}
+            Check now
+          </Button>
+        </div>
+
+        {d.updateAvailable && (
+          <div className="space-y-3 rounded-lg border border-ok/30 bg-ok/5 p-4">
+            <p className="text-xs leading-relaxed text-ink-dim">
+              A new version is available{d.publishedAt && ` (published ${new Date(d.publishedAt).toLocaleDateString()})`}.
+              The hub can't rebuild its own container — run this on the host:
+            </p>
+            <code className="block break-all rounded-lg bg-black/40 p-3 font-mono text-[11px] text-ok">
+              {composeCmd}
+            </code>
+            <div className="flex flex-wrap items-center gap-2">
+              <CopyButton text={composeCmd} label="Copy command" />
+              {d.releaseUrl && (
+                <a
+                  href={d.releaseUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-lg border border-line-strong px-4 py-2 text-sm font-medium text-ink-dim transition-colors hover:border-ink-faint hover:text-ink"
+                >
+                  Release notes
+                </a>
+              )}
+            </div>
+            <p className="text-[11px] leading-relaxed text-ink-faint">
+              {portainerHint}. Prefer zero-touch? Enable automatic updates with{' '}
+              <code className="font-mono">docker compose --profile autoupdate up -d</code> — a
+              Watchtower sidecar pulls new images hourly.
+            </p>
+          </div>
+        )}
+      </Card>
+    </section>
   );
 }
 

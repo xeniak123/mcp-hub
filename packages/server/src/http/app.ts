@@ -10,6 +10,7 @@ import { apiKeyRoutes } from '../auth/apiKeys.js';
 import { marketplaceAndConnectorRoutes } from '../modules/marketplace.js';
 import { backupRoutes } from '../modules/backup.js';
 import { healthRoutes } from '../modules/health.js';
+import { updateRoutes } from '../modules/update.js';
 import { logRoutes } from '../logs/routes.js';
 import { mountMcp } from '../hub/server.js';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
@@ -30,6 +31,7 @@ export async function buildApp(hubServer: McpServer) {
   await app.register(marketplaceAndConnectorRoutes);
   await app.register(backupRoutes);
   await app.register(healthRoutes);
+  await app.register(updateRoutes);
   await app.register(logRoutes);
 
   // unified MCP endpoint

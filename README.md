@@ -86,6 +86,13 @@ All connector tools appear namespaced as `github__create_issue`, `postgres__quer
   5-minute per-connector cooldown).
 - **Watchdog** — crashed processes restart with exponential backoff; health ping every
   30 s; boot recovery restores everything that was enabled before restart.
+- **Updates** — Settings shows your current version and checks GitHub releases /
+  Docker Hub tags every 6 h (or on **Check now**). When a new version is published
+  you get a one-click copy of the exact upgrade command for your deployment type.
+- **Optional auto-update** — enable the Watchtower sidecar with
+  `docker compose --profile autoupdate up -d`: it pulls newer `xeniak123/mcp-hub`
+  images hourly and recreates only the app container (it is label-scoped, so it
+  never touches your database).
 - **Monitoring & ops** — unauthenticated `GET /healthz` for uptime probes;
   `GET /api/meta` reports version + git commit (shown in Settings footer);
   API-key traffic on `/mcp` is rate-limited to 120 requests/min per key.
@@ -106,6 +113,25 @@ All connector tools appear namespaced as `github__create_issue`, `postgres__quer
 
 Volumes: `pgdata` (database), `app-data` (master key + state), `npx-cache`
 (connector dependency cache — keeps restarts fast).
+
+### Updating
+
+The hub cannot replace its own container, so updates are a one-liner on the host:
+
+```bash
+docker compose pull app && docker compose up -d --no-deps --force-recreate app
+```
+
+(Settings → Updates copies this for you when a new version is available. On
+Portainer use **Stack → Pull and redeploy**.) Want it fully hands-off?
+
+```bash
+docker compose --profile autoupdate up -d
+```
+
+That starts Watchtower next to the hub; every hour it checks Docker Hub and
+recreates the app container when a newer image exists (`--cleanup` removes old
+images). Your data lives in volumes, so updates are lossless.
 
 ## Development
 

@@ -5,6 +5,9 @@ services:
       args:
         GIT_COMMIT: ${GIT_COMMIT:-unknown}
     restart: unless-stopped
+    # Watchtower (autoupdate profile) only touches containers with this label.
+    labels:
+      - "com.centurylinkfoundation.watchtower.enable=true"
     ports:
       - "${APP_PORT:-3000}:3000"
     env_file: .env
@@ -36,6 +39,17 @@ services:
       interval: 5s
       timeout: 3s
       retries: 12
+
+  # Optional fully-automatic updates: pulls a newer xeniak123/mcp-hub image
+  # when one is published and recreates the app container. Off by default —
+  # enable with: docker compose --profile autoupdate up -d
+  watchtower:
+    image: containrrr/watchtower
+    profiles: ["autoupdate"]
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command: --interval 3600 --cleanup --label-enable mcp-hub
 
 volumes:
   pgdata:
