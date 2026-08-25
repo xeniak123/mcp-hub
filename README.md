@@ -52,9 +52,11 @@ All connector tools appear namespaced as `github__create_issue`, `postgres__quer
 
 ## What you get
 
-- **Marketplace** — 56 built-in connectors (GitHub, Slack, Postgres, Stripe,
-  Filesystem, Fetch, Puppeteer, Jira, Linear, Notion, Sentry, Figma, Google Drive,
-  Redis, MongoDB, Kubernetes, Cloudflare, Home Assistant, Telegram, Reddit…).
+- **Marketplace** — 71 built-in connectors for developers (GitHub, GitLab, Postgres,
+  Kubernetes, Sentry…) *and* business teams — CRM (Salesforce, HubSpot, Pipedrive),
+  ERP/accounting (Odoo, QuickBooks, Xero), helpdesk (Zendesk, Freshdesk, ServiceNow),
+  communication (Microsoft 365, Email IMAP/SMTP, Twilio, Slack, Teams files),
+  productivity (Google Sheets, Notion, Airtable) and observability (Dynatrace).
   One-click install, schema-driven config form, background dependency startup via
   `npx`/`uvx` inside the hub container. Search, category filters and sorting
   (official first / most installed / name).

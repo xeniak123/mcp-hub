@@ -57,6 +57,21 @@ import { reddit } from './connectors/reddit.js';
 import { clickup } from './connectors/clickup.js';
 import { bigquery } from './connectors/bigquery.js';
 import { tavily } from './connectors/tavily.js';
+import { ms365 } from './connectors/ms-365.js';
+import { salesforce } from './connectors/salesforce.js';
+import { quickbooks } from './connectors/quickbooks.js';
+import { xero } from './connectors/xero.js';
+import { zendesk } from './connectors/zendesk.js';
+import { freshdesk } from './connectors/freshdesk.js';
+import { servicenow } from './connectors/servicenow.js';
+import { twilio } from './connectors/twilio.js';
+import { email } from './connectors/email.js';
+import { odoo } from './connectors/odoo.js';
+import { pipedrive } from './connectors/pipedrive.js';
+import { bitbucket } from './connectors/bitbucket.js';
+import { dynatrace } from './connectors/dynatrace.js';
+import { googleSheets } from './connectors/google-sheets.js';
+import { dataverse } from './connectors/dataverse.js';
 
 export const REGISTRY: ConnectorManifest[] = [
   github,
@@ -115,6 +130,21 @@ export const REGISTRY: ConnectorManifest[] = [
   clickup,
   bigquery,
   tavily,
+  ms365,
+  salesforce,
+  quickbooks,
+  xero,
+  zendesk,
+  freshdesk,
+  servicenow,
+  twilio,
+  email,
+  odoo,
+  pipedrive,
+  bitbucket,
+  dynatrace,
+  googleSheets,
+  dataverse,
 ];
 
 // Custom manifests from the connectors volume are appended after built-ins;
