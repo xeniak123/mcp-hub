@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-Only the latest release of the `xeniak10/mcp-hub` image is supported.
+Only the latest release of the `xeniak123/mcp-hub` image is supported.
 
 ## Reporting a vulnerability
 

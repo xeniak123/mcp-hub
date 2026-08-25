@@ -19,7 +19,7 @@ const COMMUNITY_PREFIX = 'community:';
 const FETCH_TIMEOUT_MS = 15_000;
 
 interface RepoSource {
-  /** Cache key / display slug, e.g. "xeniak10/mcp-connectors" */
+  /** Cache key / display slug, e.g. "xeniak123/mcp-connectors" */
   repo: string;
   addedAt: string;
 }

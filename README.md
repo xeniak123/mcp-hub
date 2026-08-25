@@ -27,7 +27,7 @@ docker compose up -d --build
 
 1. **Stacks → Add stack → Web editor** and paste [`portainer-stack.yml`](portainer-stack.yml).
 2. Add an environment variable `POSTGRES_PASSWORD` (under **Environment variables**) before deploying.
-3. Deploy — the image is pulled from Docker Hub (`xeniak10/mcp-hub:latest`), no build needed.
+3. Deploy — the image is pulled from Docker Hub (`xeniak123/mcp-hub:latest`), no build needed.
 
 Open **http://<host>:3000** — on first visit you'll be asked to create the admin
 account (bootstrap). Then:

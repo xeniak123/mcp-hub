@@ -9,7 +9,7 @@
 
 services:
   app:
-    image: xeniak10/mcp-hub:latest
+    image: xeniak123/mcp-hub:latest
     restart: unless-stopped
     ports:
       - "${APP_PORT:-3000}:3000"
