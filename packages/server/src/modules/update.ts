@@ -19,7 +19,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
  */
 
 const DOCKER_HUB_TAGS =
-  'https://hub.docker.com/v2/repositories/xeniak123/mcp-hub/tags?page_size=25';
+  'https://hub.docker.com/v2/repositories/xeniak10/mcp-hub/tags?page_size=25';
 const GITHUB_RELEASES = 'https://api.github.com/repos/xeniak123/mcp-hub/releases/latest';
 // Re-check at most every 6 hours; result is also cached in memory.
 const CHECK_INTERVAL_MS = 6 * 60 * 60 * 1000;

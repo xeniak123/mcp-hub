@@ -40,7 +40,7 @@ services:
       timeout: 3s
       retries: 12
 
-  # Optional fully-automatic updates: pulls a newer xeniak123/mcp-hub image
+  # Optional fully-automatic updates: pulls a newer xeniak10/mcp-hub image
   # when one is published and recreates the app container. Off by default —
   # enable with: docker compose --profile autoupdate up -d
   watchtower:

@@ -27,7 +27,7 @@ docker compose up -d --build
 
 1. **Stacks → Add stack → Web editor** and paste [`portainer-stack.yml`](portainer-stack.yml).
 2. Add an environment variable `POSTGRES_PASSWORD` (under **Environment variables**) before deploying.
-3. Deploy — the image is pulled from Docker Hub (`xeniak123/mcp-hub:latest`), no build needed.
+3. Deploy — the image is pulled from Docker Hub (`xeniak10/mcp-hub:latest`), no build needed.
 
 Open **http://<host>:3000** — on first visit you'll be asked to create the admin
 account (bootstrap). Then:
@@ -90,7 +90,7 @@ All connector tools appear namespaced as `github__create_issue`, `postgres__quer
   Docker Hub tags every 6 h (or on **Check now**). When a new version is published
   you get a one-click copy of the exact upgrade command for your deployment type.
 - **Optional auto-update** — enable the Watchtower sidecar with
-  `docker compose --profile autoupdate up -d`: it pulls newer `xeniak123/mcp-hub`
+  `docker compose --profile autoupdate up -d`: it pulls newer `xeniak10/mcp-hub`
   images hourly and recreates only the app container (it is label-scoped, so it
   never touches your database).
 - **Monitoring & ops** — unauthenticated `GET /healthz` for uptime probes;
