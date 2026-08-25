@@ -1,0 +1,22 @@
+name: Connector request
+description: Suggest an MCP connector for the built-in marketplace.
+labels: [connector-request]
+body:
+  - type: input
+    id: package
+    attributes:
+      label: npm / PyPI package
+      description: The package a hub would run via npx or uvx.
+      placeholder: e.g. @modelcontextprotocol/server-github
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: What does it add?
+      description: Which tools, and who would use them?
+  - type: textarea
+    id: config
+    attributes:
+      label: Required configuration
+      description: e.g. GITHUB_TOKEN, allowed directory, DSN…

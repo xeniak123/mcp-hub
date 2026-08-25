@@ -1,0 +1,25 @@
+{
+  "id": "my-custom-connector",
+  "name": "My Custom Connector",
+  "icon": "Puzzle",
+  "description": "Example of a user-supplied marketplace entry. Copy this file, change the fields and drop it into ./connectors/ (or the connectors volume) — it appears in the marketplace after a hub restart.",
+  "category": "other",
+  "docsUrl": "https://github.com/modelcontextprotocol/servers",
+  "keywords": ["example", "template"],
+  "command": {
+    "run": ["npx", "-y", "@modelcontextprotocol/server-everything"],
+    "env": {}
+  },
+  "configSchema": {
+    "type": "object",
+    "properties": {
+      "API_KEY": {
+        "type": "string",
+        "title": "API key",
+        "description": "Exposed to the process as {env.API_KEY}.",
+        "ui": { "widget": "password", "placeholder": "sk-…" }
+      }
+    },
+    "required": ["API_KEY"]
+  }
+}

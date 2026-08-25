@@ -1,0 +1,16 @@
+{
+  "name": "MCP Hub",
+  "short_name": "MCP Hub",
+  "description": "Self-hosted control center for MCP connectors.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#101312",
+  "theme_color": "#101312",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

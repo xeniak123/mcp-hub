@@ -1,0 +1,50 @@
+# MCP Hub — stack dla Portainer (web editor)
+#
+# 1. W Portainer: Stacks → Add stack → Web editor → wklej ten plik.
+# 2. Ustaw zmienną POSTGRES_PASSWORD w sekcji "Environment variables"
+#    (albo edytuj poniżej) przed deployem.
+# 3. Deploy the stack. UI: http://<serwer>:3000 — pierwsza wizyta = bootstrap admina.
+#
+# Obraz jest publiczny na Docker Hub i budowany ze źródeł projektu.
+
+services:
+  app:
+    image: xeniak10/mcp-hub:latest
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    environment:
+      DATABASE_URL: postgres://hub:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in stack env}@db:5432/hub
+      DATA_DIR: /app/data
+      NPM_CONFIG_CACHE: /root/.npm
+      # opcjonalne — patrz README:
+      MASTER_ENCRYPTION_KEY: ${MASTER_ENCRYPTION_KEY:-}
+      SESSION_SECRET: ${SESSION_SECRET:-}
+      LOG_RETENTION_LINES: ${LOG_RETENTION_LINES:-5000}
+      LOG_RETENTION_DAYS: ${LOG_RETENTION_DAYS:-7}
+    volumes:
+      - app-data:/app/data
+      - npx-cache:/root/.npm
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: hub
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in stack env}
+      POSTGRES_DB: hub
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hub -d hub"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+volumes:
+  pgdata:
+  npx-cache:
+  app-data:

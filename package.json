@@ -1,0 +1,17 @@
+{
+  "name": "mcp-hub",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w @hub/shared && npm run build -w @hub/web && npm run build -w @hub/server",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "dev": "npm run dev -w @hub/server",
+    "dev:web": "npm run dev -w @hub/web"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

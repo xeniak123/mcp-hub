@@ -1,0 +1,162 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Warm graphite with a faint green undertone — console, not nightclub.
+     Values are overridden per-theme below; these defaults ARE dark mode. */
+  --color-bg: #101312;
+  --color-panel: #171b19;
+  --color-panel-raised: #1d2320;
+  --color-line: rgba(255, 255, 255, 0.07);
+  --color-line-strong: rgba(255, 255, 255, 0.14);
+
+  --color-ink: #e9ebe7;
+  --color-ink-dim: #9fa79f;
+  --color-ink-faint: #666e67;
+
+  /* Semantic only — never decorative */
+  --color-ok: #34d399;
+  --color-warn: #fbbf24;
+  --color-bad: #fb7185;
+
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Light theme: same hue family, inverted value scale. Tailwind v4 @theme
+   tokens resolve to var() references, so re-declaring them on [data-theme]
+   flips the whole UI without touching component classes. */
+[data-theme='light'] {
+  --color-bg: #f4f5f2;
+  --color-panel: #fcfcfa;
+  --color-panel-raised: #ffffff;
+  --color-line: rgba(20, 24, 20, 0.09);
+  --color-line-strong: rgba(20, 24, 20, 0.18);
+
+  --color-ink: #1b201d;
+  --color-ink-dim: #5a625c;
+  --color-ink-faint: #8d948e;
+
+  --color-ok: #059669;
+  --color-warn: #b45309;
+  --color-bad: #e11d48;
+}
+
+/* Dark-mode-only rgba washes need explicit light-mode counterparts. */
+[data-theme='light'] .well {
+  background: rgba(20, 24, 20, 0.04);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  transition: background-color 0.2s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Panels ---------------------------------------------------------------- */
+
+.card {
+  background: var(--color-panel);
+  border: 1px solid var(--color-line);
+  border-radius: 0.75rem;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.card:hover {
+  border-color: var(--color-line-strong);
+}
+
+.well {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--color-line);
+  border-radius: 0.6rem;
+}
+
+/* --- Motion ---------------------------------------------------------------- */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-rise {
+  animation: rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animate-fade {
+  animation: fade 0.2s ease both;
+}
+.animate-pop {
+  animation: pop 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Staggered children — used on grids and lists */
+.stagger > * {
+  animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.stagger > *:nth-child(1) { animation-delay: 0.03s; }
+.stagger > *:nth-child(2) { animation-delay: 0.06s; }
+.stagger > *:nth-child(3) { animation-delay: 0.09s; }
+.stagger > *:nth-child(4) { animation-delay: 0.12s; }
+.stagger > *:nth-child(5) { animation-delay: 0.15s; }
+.stagger > *:nth-child(6) { animation-delay: 0.18s; }
+.stagger > *:nth-child(7) { animation-delay: 0.21s; }
+.stagger > *:nth-child(8) { animation-delay: 0.24s; }
+.stagger > *:nth-child(9) { animation-delay: 0.27s; }
+.stagger > *:nth-child(n + 10) { animation-delay: 0.3s; }
+
+.log-line {
+  animation: rise 0.25s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* --- Scrollbars ------------------------------------------------------------ */
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--color-line-strong);
+  border-radius: 4px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}

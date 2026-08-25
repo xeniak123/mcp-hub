@@ -1,0 +1,3 @@
+# Custom connector manifests are user-local; the example is kept as .json.example
+*.json
+!example.json.example

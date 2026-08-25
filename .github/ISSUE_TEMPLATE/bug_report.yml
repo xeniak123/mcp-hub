@@ -1,0 +1,32 @@
+name: Bug report
+description: Something is broken — tell us what happened.
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you expect to happen instead? Include the exact error text if there was any.
+    validations:
+      required: true
+  - type: dropdown
+    id: deployment
+    attributes:
+      label: Deployment
+      options:
+        - docker compose (local build)
+        - Docker Hub image / Portainer
+        - npm run dev (local development)
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: "`docker compose logs app` output, or the connector's Logs tab. Redact secrets."
+      render: shell
+  - type: input
+    id: version
+    attributes:
+      label: Image tag or commit
+      placeholder: latest / v0.2.0 / commit sha
