@@ -22,7 +22,9 @@ RUN npm run build -w @hub/shared \
 
 # ---- runtime stage ----
 FROM node:20-slim
-ENV NODE_ENV=production
+# Re-declared so it survives into the runtime image (ARGs are stage-scoped).
+ARG GIT_COMMIT=unknown
+ENV NODE_ENV=production GIT_COMMIT=${GIT_COMMIT}
 WORKDIR /app
 
 # node for npx-spawned connectors, python3+uv for python-based ones
